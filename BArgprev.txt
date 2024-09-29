@@ -1,0 +1,356 @@
+// {import React from 'react';
+// import PropTypes from 'prop-types';
+// import { Bar } from 'react-chartjs-2';
+// import {
+//   Chart as ChartJS,
+//   CategoryScale,
+//   LinearScale,
+//   BarController,
+//   BarElement,
+//   Title,
+//   Tooltip,
+//   Legend,
+// } from 'chart.js';
+
+// ChartJS.register(
+//   Title,
+//   Tooltip,
+//   Legend,
+//   CategoryScale,
+//   LinearScale,
+//   BarElement,
+//   BarController
+// );
+
+// const Bargraph = ({ selectedRange }) => {
+  
+//   const datasets = [
+//     {
+//       label: 'Temperature',
+//       backgroundColor: 'rgba(75, 192, 192, 0.6)',
+//       borderColor: 'rgba(75, 192, 192, 1)',
+//       borderWidth: 1,
+//       data: {
+//         'this-week': [18, 22, 17, 19, 20, 21, 25],
+//         'past-week': [22, 25, 20, 21, 19, 23, 24],
+//       },
+//     },
+//     {
+//       label: 'Gas',
+//       backgroundColor: 'rgba(0, 0, 0, 0.43)',
+//       borderColor: 'rgba(75, 192, 192, 1)',
+//       borderWidth: 1,
+//       data: {
+//         'this-week': [30, 35, 33, 31, 30, 29, 28],
+//         'past-week': [32, 34, 31, 33, 35, 36, 30],
+//       },
+//     },
+//     {
+//       label: 'Humidity',
+//       backgroundColor: 'rgba(0, 0, 253, 0.8)',
+//       borderColor: 'rgba(75, 192, 192, 1)',
+//       borderWidth: 1,
+//       data: {
+//         'this-week': [70, 68, 65, 69, 72, 75, 71],
+//         'past-week': [60, 65, 64, 63, 68, 70, 66],
+//       },
+//     },
+//   ];
+
+//   // Mapping through datasets and picking the correct data based on selectedRange
+//   const chartData = {
+//     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+//     datasets: datasets.map((dataset) => ({
+//       ...dataset,
+//       data: dataset.data[selectedRange] || [],
+//     })),
+//   };
+
+//   const options = {
+//     responsive: true,
+//     maintainAspectRatio: false, // Disable aspect ratio to allow dynamic resizing
+//     scales: {
+//       y: {
+//         beginAtZero: true,
+//       },
+//     },
+//   };
+
+//   return (
+//     <div className="bar-container flex items-center justify-center w-full">
+//       <div className="bar-graph w-full sm:w-4/5 md:w-3/4 lg:w-1/2" style={{ height: '300px' }}>
+//         <Bar data={chartData} options={options} />
+//       </div>
+//     </div>
+//   );
+// };
+
+// Bargraph.propTypes = {
+//   selectedRange: PropTypes.string.isRequired,
+// };
+
+// export default Bargraph;
+// }
+
+// {// import PropTypes from 'prop-types';
+// // import { Bar } from 'react-chartjs-2';
+// // import {
+// //   Chart as ChartJS,
+// //   CategoryScale,
+// //   LinearScale,
+// //   BarController,
+// //   BarElement,
+// //   Title,
+// //   Tooltip,
+// //   Legend,
+// // } from 'chart.js';
+
+// // ChartJS.register(
+// //   Title,
+// //   Tooltip,
+// //   Legend,
+// //   CategoryScale,
+// //   LinearScale,
+// //   BarElement,
+// //   BarController
+// // );
+
+// // const Bargraph = ({ selectedRange, selectedDate }) => {
+  
+// //   const datasets = [
+// //     {
+// //       label: 'Temperature',
+// //       backgroundColor: 'rgba(75, 192, 192, 0.6)',
+// //       borderColor: 'rgba(75, 192, 192, 1)',
+// //       borderWidth: 1,
+// //       data: {
+// //         'this-week': [18, 22, 17, 19, 20, 21, 25],
+// //         'past-week': [22, 25, 20, 21, 19, 23, 24],
+// //         '2024-09-25': [20, 21, 22, 23, 24, 25, 26],
+// //         '2024-09-26': [18, 19, 20, 21, 22, 23, 24],
+// //         '2024-09-27': [19, 20, 21, 22, 23, 24, 25],
+// //         '2024-09-28': [21, 22, 23, 24, 25, 26, 27],
+// //       },
+// //     },
+// //     {
+// //       label: 'Gas',
+// //       backgroundColor: 'rgba(0, 0, 0, 0.43)',
+// //       borderColor: 'rgba(75, 192, 192, 1)',
+// //       borderWidth: 1,
+// //       data: {
+// //         'this-week': [30, 35, 33, 31, 30, 29, 28],
+// //         'past-week': [32, 34, 31, 33, 35, 36, 30],
+// //         '2024-09-25': [29, 28, 27, 26, 25, 24, 23],
+// //         '2024-09-26': [27, 26, 25, 24, 23, 22, 21],
+// //         '2024-09-27': [28, 27, 26, 25, 24, 23, 22],
+// //         '2024-09-28': [26, 25, 24, 23, 22, 21, 20],
+// //       },
+// //     },
+// //     {
+// //       label: 'Humidity',
+// //       backgroundColor: 'rgba(0, 0, 253, 0.8)',
+// //       borderColor: 'rgba(75, 192, 192, 1)',
+// //       borderWidth: 1,
+// //       data: {
+// //         'this-week': [70, 68, 65, 69, 72, 75, 71],
+// //         'past-week': [60, 65, 64, 63, 68, 70, 66],
+// //         '2024-09-25': [67, 66, 65, 64, 63, 62, 61],
+// //         '2024-09-26': [68, 67, 66, 65, 64, 63, 62],
+// //         '2024-09-27': [69, 68, 67, 66, 65, 64, 63],
+// //         '2024-09-28': [65, 64, 63, 62, 61, 60, 59],
+// //       },
+// //     },
+// //   ];
+
+
+// //   const getDataForDate = (date) => {
+// //     // Here, you would typically fetch or filter data based on the selected date
+// //     return {
+// //       '2024-09-25': [20, 21, 22, 23, 24, 25, 26],
+// //       '2024-09-26': [18, 19, 20, 21, 22, 23, 24],
+// //       '2024-09-27': [19, 20, 21, 22, 23, 24, 25],
+// //       '2024-09-28': [21, 22, 23, 24, 25, 26, 27],
+// //     }[date] || [];
+// //   };
+
+// //   const chartData = {
+// //     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+// //     datasets: datasets.map((dataset) => ({
+// //       ...dataset,
+// //       data: selectedDate ? getDataForDate(selectedDate) : dataset.data[selectedRange] || [],
+// //     })),
+// //   };
+
+// //   const options = {
+// //     responsive: true,
+// //     maintainAspectRatio: false,
+// //     scales: {
+// //       y: {
+// //         beginAtZero: true,
+// //       },
+// //     },
+// //   };
+
+// //   return (
+// //     <div className="bar-container flex items-center justify-center w-full">
+// //       <div className="bar-graph w-full sm:w-4/5 md:w-3/4 lg:w-1/2" style={{ height: '300px' }}>
+// //         <Bar data={chartData} options={options} />
+// //       </div>
+// //     </div>
+// //   );
+// // };
+
+// // Bargraph.propTypes = {
+// //   selectedRange: PropTypes.string,
+// //   selectedDate: PropTypes.string,
+// // };
+
+// // export default Bargraph;
+// }
+// {
+// import PropTypes from 'prop-types';
+// import { Bar } from 'react-chartjs-2';
+// import {
+//   Chart as ChartJS,
+//   CategoryScale,
+//   LinearScale,
+//   BarController,
+//   BarElement,
+//   Title,
+//   Tooltip,
+//   Legend,
+// } from 'chart.js';
+
+// ChartJS.register(
+//   Title,
+//   Tooltip,
+//   Legend,
+//   CategoryScale,
+//   LinearScale,
+//   BarElement,
+//   BarController
+// );
+
+// const Bargraph = ({ selectedRange, selectedDate }) => {
+  
+//   const datasets = [
+//     {
+//       label: 'Temperature (°C)',
+//       backgroundColor: 'rgba(75, 192, 192, 0.6)',
+//       borderColor: 'rgba(75, 192, 192, 1)',
+//       borderWidth: 1,
+//       data: {
+//         'this-week': [18, 22, 17, 19, 20, 21, 25],
+//         'past-week': [22, 25, 20, 21, 19, 23, 24],
+//         '2024-09-25': [20, 21, 22, 23, 24, 25, 26],
+//         '2024-09-26': [18, 19, 20, 21, 22, 23, 24],
+//         '2024-09-27': [19, 20, 21, 22, 23, 24, 25],
+//         '2024-09-28': [21, 22, 23, 24, 25, 26, 27],
+//       },
+//     },
+//     {
+//       label: 'Gas (ppm)', // ppm: parts per million
+//       backgroundColor: 'rgba(0, 0, 0, 0.43)',
+//       borderColor: 'rgba(75, 192, 192, 1)',
+//       borderWidth: 1,
+//       data: {
+//         'this-week': [30, 35, 33, 31, 30, 29, 28],
+//         'past-week': [32, 34, 31, 33, 35, 36, 30],
+//         '2024-09-25': [29, 28, 27, 26, 25, 24, 23],
+//         '2024-09-26': [27, 26, 25, 24, 23, 22, 21],
+//         '2024-09-27': [28, 27, 26, 25, 24, 23, 22],
+//         '2024-09-28': [26, 25, 24, 23, 22, 21, 20],
+//       },
+//     },
+//     {
+//       label: 'Humidity (%)',
+//       backgroundColor: 'rgba(0, 0, 253, 0.8)',
+//       borderColor: 'rgba(75, 192, 192, 1)',
+//       borderWidth: 1,
+//       data: {
+//         'this-week': [70, 68, 65, 69, 72, 75, 71],
+//         'past-week': [60, 65, 64, 63, 68, 70, 66],
+//         '2024-09-25': [67, 66, 65, 64, 63, 62, 61],
+//         '2024-09-26': [68, 67, 66, 65, 64, 63, 62],
+//         '2024-09-27': [69, 68, 67, 66, 65, 64, 63],
+//         '2024-09-28': [65, 64, 63, 62, 61, 60, 59],
+//       },
+//     },
+//   ];
+
+//   const getDataForDate = (date) => {
+//     return {
+//       '2024-09-25': [20, 21, 22, 23, 24, 25, 26],
+//       '2024-09-26': [18, 19, 20, 21, 22, 23, 24],
+//       '2024-09-27': [19, 20, 21, 22, 23, 24, 25],
+//       '2024-09-28': [21, 22, 23, 24, 25, 26, 27],
+//     }[date] || [];
+//   };
+
+//   const chartData = {
+//     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+//     datasets: datasets.map((dataset) => ({
+//       ...dataset,
+//       data: selectedDate ? getDataForDate(selectedDate) : dataset.data[selectedRange] || [],
+//     })),
+//   };
+
+//   const options = {
+//     responsive: true,
+//     maintainAspectRatio: false,
+//     scales: {
+//       y: {
+//         beginAtZero: true,
+//         ticks: {
+//           callback: function (value, index, values) {
+//             // Check the dataset label and add units to the y-axis ticks
+//             const datasetLabel = this.chart.data.datasets[0].label;
+//             if (datasetLabel.includes('Temperature')) {
+//               return `${value}°C`;
+//             } else if (datasetLabel.includes('Gas')) {
+//               return `${value} ppm`;
+//             } else if (datasetLabel.includes('Humidity')) {
+//               return `${value}%`;
+//             }
+//             return value;
+//           },
+//         },
+//       },
+//     },
+//     plugins: {
+//       tooltip: {
+//         callbacks: {
+//           label: function (context) {
+//             const label = context.dataset.label || '';
+//             let value = context.raw;
+//             // Add units to the tooltip based on the dataset
+//             if (label.includes('Temperature')) {
+//               value += '°C';
+//             } else if (label.includes('Gas')) {
+//               value += ' ppm';
+//             } else if (label.includes('Humidity')) {
+//               value += '%';
+//             }
+//             return `${label}: ${value}`;
+//           },
+//         },
+//       },
+//     },
+//   };
+
+//   return (
+//     <div className="bar-container flex items-center justify-center w-full">
+//       <div className="bar-graph w-full sm:w-4/5 md:w-3/4 lg:w-1/2" style={{ height: '300px' }}>
+//         <Bar data={chartData} options={options} />
+//       </div>
+//     </div>
+//   );
+// };
+
+// Bargraph.propTypes = {
+//   selectedRange: PropTypes.string,
+//   selectedDate: PropTypes.string,
+// };
+
+// export default Bargraph;
+// }
