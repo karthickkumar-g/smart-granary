@@ -3,17 +3,27 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import LoadingBar from "../utils/LoadingBar";
-import { useNavigate } from "react-router-dom"; 
-import { useAuth } from '../context/AuthContext'; 
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import axios from "axios";
 
 const schema = z
   .object({
     email: z.string().min(1, "Enter email.").email("Invalid email format."),
-    pass: z.string().min(1, "Enter password.").min(4, "Password must be at least 4 characters long."),
+    pass: z
+      .string()
+      .min(1, "Enter password.")
+      .min(4, "Password must be at least 4 characters long."),
     confirmPass: z.string().min(1, "Please confirm your password."),
-    phoneNumber: z.string().min(1, "Enter phone number.").min(10, "Phone number must be at least 10 characters long."),
-    firstName: z.string().min(1, "Enter first name.").min(3, "First name must be at least 3 characters long."),
+    phoneNumber: z
+      .string()
+      .regex(/^\d{10}$/, "Phone number must be exactly 10 digits."),
+    firstName: z
+      .string()
+      .min(1, "Enter first name.")
+      .min(3, "First name must be at least 3 characters long."),
     lastName: z.string().optional(),
+    device: z.string().min(1, "Enter device id."),
   })
   .refine((data) => data.pass === data.confirmPass, {
     message: "Passwords don't match",
@@ -24,8 +34,8 @@ const Register = () => {
   const [otpSent] = useState(false);
   const [otp, setOtp] = useState("");
   const [header, setHeader] = useState("Register"); // State for header text
-  const navigate = useNavigate(); 
-  const { setIsAuthenticated } = useAuth(); 
+  const navigate = useNavigate();
+  const { setIsAuthenticated } = useAuth();
 
   const {
     register,
@@ -34,40 +44,49 @@ const Register = () => {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      email: "test@gmail.com",
-      phoneNumber: "9876543212",
-      firstName: "qwe",
-      lastName: "wq",
-      pass: "1234",
-      confirmPass: "1234",
-      device: "device1",
+      email: "",
+      phoneNumber: "",
+      firstName: "",
+      lastName: "",
+      pass: "",
+      confirmPass: "",
+      device: "",
     },
     resolver: zodResolver(schema),
   });
 
   const onSubmit = async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000)); 
+      await axios
+        .post("/api/register", data)
+        .then((res) => console.log("Sent to backend:", res));
       console.log(data);
       setHeader("Registration Successful!");
-      setIsAuthenticated(true);  // Change header text on successful registration
+      setIsAuthenticated(true); // Change header text on successful registration
       navigate("/");
     } catch (error) {
       setError("root", {
         message: "This email is already taken",
       });
+      const message =
+        error.response?.data?.message || "This email is already taken";
+      setError("root", { message });
     }
   };
 
   return (
     <section className="flex justify-center items-center p-20 bg-gray-100">
       <div className="w-full max-w-md p-8 bg-white shadow-lg rounded-lg">
-        <h2 className="text-2xl font-bold text-center mb-6">{header}</h2> {/* Display dynamic header */}
+        <h2 className="text-2xl font-bold text-center mb-6">{header}</h2>{" "}
+        {/* Display dynamic header */}
         <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
           {!otpSent && (
             <>
               <div>
-                <label htmlFor="firstName" className="block text-left font-semibold mb-2">
+                <label
+                  htmlFor="firstName"
+                  className="block text-left font-semibold mb-2"
+                >
                   First Name{" "}
                   {errors.firstName && <span className="text-red-500">*</span>}
                 </label>
@@ -84,7 +103,10 @@ const Register = () => {
               </div>
 
               <div>
-                <label htmlFor="lastName" className="block text-left font-semibold mb-2">
+                <label
+                  htmlFor="lastName"
+                  className="block text-left font-semibold mb-2"
+                >
                   Last Name
                 </label>
                 <input
@@ -97,7 +119,10 @@ const Register = () => {
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-left font-semibold mb-2">
+                <label
+                  htmlFor="email"
+                  className="block text-left font-semibold mb-2"
+                >
                   Email
                 </label>
                 <input
@@ -113,7 +138,10 @@ const Register = () => {
               </div>
 
               <div>
-                <label htmlFor="phoneNumber" className="block text-left font-semibold mb-2">
+                <label
+                  htmlFor="phoneNumber"
+                  className="block text-left font-semibold mb-2"
+                >
                   Phone Number
                 </label>
                 <input
@@ -124,12 +152,17 @@ const Register = () => {
                   className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 {errors.phoneNumber && (
-                  <div className="text-red-500">{errors.phoneNumber.message}</div>
+                  <div className="text-red-500">
+                    {errors.phoneNumber.message}
+                  </div>
                 )}
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-left font-semibold mb-2">
+                <label
+                  htmlFor="password"
+                  className="block text-left font-semibold mb-2"
+                >
                   Password
                 </label>
                 <input
@@ -145,7 +178,10 @@ const Register = () => {
               </div>
 
               <div>
-                <label htmlFor="confirmPassword" className="block text-left font-semibold mb-2">
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-left font-semibold mb-2"
+                >
                   Confirm Password
                 </label>
                 <input
@@ -156,29 +192,40 @@ const Register = () => {
                   className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 {errors.confirmPass && (
-                  <div className="text-red-500">{errors.confirmPass.message}</div>
+                  <div className="text-red-500">
+                    {errors.confirmPass.message}
+                  </div>
                 )}
               </div>
 
               <div>
-                <label htmlFor="device" className="block text-left font-semibold mb-2">
+                <label
+                  htmlFor="device"
+                  className="block text-left font-semibold mb-2"
+                >
                   Select Device
                 </label>
-                <select
+
+                <input
+                  type="text"
                   {...register("device")}
                   className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">-- Select Device --</option>
-                  <option value="device1">Device 1</option>
-                  <option value="device2">Device 2</option>
-                </select>
-                {errors.device && <div className="text-red-500">Select device</div>}
+                  name="device"
+                  id="device"
+                />
+
+                {errors.device && (
+                  <div className="text-red-500">Enter device id.</div>
+                )}
               </div>
             </>
           )}
           {otpSent && (
             <div>
-              <label htmlFor="otp" className="block text-left font-semibold mb-2">
+              <label
+                htmlFor="otp"
+                className="block text-left font-semibold mb-2"
+              >
                 Enter OTP
               </label>
               <input
@@ -197,9 +244,17 @@ const Register = () => {
             disabled={isSubmitting}
             className="w-full py-3 bg-btn-bg text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-300"
           >
-            {isSubmitting ? <LoadingBar size="w-6 h-6" color="border-white-500" /> : otpSent ? "Verify OTP" : "Register"}
+            {isSubmitting ? (
+              <LoadingBar size="w-6 h-6" color="border-white-500" />
+            ) : otpSent ? (
+              "Verify OTP"
+            ) : (
+              "Register"
+            )}
           </button>
-          {errors.root && <div className="text-red-500">{errors.root.message}</div>}
+          {errors.root && (
+            <div className="text-red-500">{errors.root.message}</div>
+          )}
         </form>
       </div>
     </section>

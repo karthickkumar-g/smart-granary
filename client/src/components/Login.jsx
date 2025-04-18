@@ -28,7 +28,7 @@ const Login = () => {
         password,
       });
       const { token } = response.data;
-      console.log("Logged in successfully");
+      // console.log("Logged in successfully");
       localStorage.setItem("token", token);
       setIsAuthenticated(true); 
       navigate("/");
@@ -78,7 +78,7 @@ const Login = () => {
 
           <div>
             <label htmlFor="device" className="block text-left font-semibold mb-2">
-              Select Device
+              Device Id
             </label>
             <select
               id="device"
@@ -89,8 +89,8 @@ const Login = () => {
               <option value="" disabled>
                 -- Select Device --
               </option>
-              <option value="device1">Device 1</option>
-              <option value="device2">Device 2</option>
+              <option value="2919189">Device 1 : 2919189</option>
+              <option value="3465769">Device 2 : 3465769</option>
             </select>
           </div>
 

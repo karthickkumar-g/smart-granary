@@ -1,23 +1,19 @@
 
 import { createContext, useContext, useState } from 'react';
-import PropTypes from 'prop-types'; 
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [deviceId,setDeviceId] = useState("");
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
+    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, deviceId,setDeviceId }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-
-AuthProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 
 export const useAuth = () => {
   return useContext(AuthContext);

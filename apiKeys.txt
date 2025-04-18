@@ -1,0 +1,22 @@
+
+
+Write channel field
+
+https://api.thingspeak.com/update?api_key=MGR6VE6T253AKK3W&field1=0
+
+Reading |
+
+For specific fields
+
+GET - https://api.thingspeak.com/channels/2919189/fields/1.json?api_key=8WVJEQBVSEUTLELS&results=2
+
+
+For entire feeds
+
+GET - https://api.thingspeak.com/channels/2919189/feeds.json?api_key=8WVJEQBVSEUTLELS&results=2
+
+
+
+Channel status
+
+GET - https://api.thingspeak.com/channels/2919189/status.json?api_key=8WVJEQBVSEUTLELS

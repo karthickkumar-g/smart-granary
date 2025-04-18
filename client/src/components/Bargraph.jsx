@@ -16,6 +16,7 @@ import {
   ArcElement, // Important for Pie/Doughnut charts
 } from 'chart.js';
 import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
 ChartJS.register(
   Title,
@@ -34,6 +35,27 @@ ChartJS.register(
 );
 
 const Bargraph = ({ selectedRange, selectedDate, chartType }) => {
+  const [data,setTdata] = useState([]);
+  useEffect(()=>{
+    const fetchData = async() =>{
+      const Tdata = await fetch("https://api.thingspeak.com/channels/2919189/fields/1.json?api_key=8WVJEQBVSEUTLELS&results=2").then(res=>res.json()).catch((err)=>console.log("Unable to fetch data"+err.error))
+      console.log(Tdata);
+      setTdata(Tdata);
+    }
+    fetchData();
+
+  },[])
+  
+  if (data?.feeds && data.feeds.length > 0) {
+    console.log(data.feeds[0].field1);
+  
+    const time = data.feeds[0].created_at.split("T")[1].split("Z")[0];
+    console.log(time);
+  } else {
+    console.log("Feeds not available yet.");
+  }
+  
+  
   const datasets = {
     temperature: {
       label: 'Temperature (°C)',
@@ -69,7 +91,7 @@ const Bargraph = ({ selectedRange, selectedDate, chartType }) => {
       borderColor: 'rgba(75, 192, 192, 1)',
       borderWidth: 1,
       data: {
-        'this-week': [70, 68, 65, 69, 72, 75, 71],
+        'this-week': [70, 56, 46, 54, 72, 56, 54],
         'past-week': [60, 65, 64, 63, 68, 70, 66],
         '2024-09-25': [67, 66, 65, 64, 63, 62, 61],
         '2024-09-26': [68, 67, 66, 65, 64, 63, 62],

@@ -24,18 +24,23 @@ const generateToken = (id) => {
 
 app.post('/api/login', async (req, res) => {
   const { emailOrUsername, password } = req.body;
+  console.log("Login attempt:", emailOrUsername);
 
   try {
-    const user = await User.findOne({ email: emailOrUsername }); // Only check email
-    console.log(user);
-    
+    const user = await User.findOne({
+      $or: [
+        { email: emailOrUsername },
+        { username: emailOrUsername }
+      ]
+    });
+
     if (!user) {
       return res.status(400).json({ message: 'No user present in this account' });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid  password' });
+      return res.status(400).json({ message: 'Invalid password' });
     }
 
     const token = generateToken(user._id);
@@ -44,13 +49,15 @@ app.post('/api/login', async (req, res) => {
       user: {
         id: user._id,
         email: user.email,
+        username: user.username,
       },
     });
   } catch (err) {
-    console.error(err);
+    console.error("Login error:", err);
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
+
 
 
 app.post('/api/register', async (req, res) => {
@@ -60,10 +67,13 @@ app.post('/api/register', async (req, res) => {
     phoneNumber: z.string().min(10, "Phone number must be at least 10 characters long."),
     firstName: z.string().min(3, "First name must be at least 3 characters long."),
     lastName: z.string().optional(),
+    device: z.string().min(1,"Enter valid device id.")
   });
 
   try {
     const data = schema.parse(req.body);
+    // console.log(data);
+    
 
     const existingUser = await User.findOne({ email: data.email });
     if (existingUser) {
@@ -78,7 +88,10 @@ app.post('/api/register', async (req, res) => {
       phoneNumber: data.phoneNumber,
       firstName: data.firstName,
       lastName: data.lastName,
+      deviceId:data.device
     });
+    // console.log(newUser);
+    
 
     await newUser.save();
     
